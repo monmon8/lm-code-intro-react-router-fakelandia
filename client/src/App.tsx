@@ -1,17 +1,22 @@
 import { useState } from "react";
 import "./App.css";
-import Home from "./components/home";
-import { Router, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Misdemeanour from "./components/Misdemeanour";
+import Confessions from "./components/ Confessions";
+import { NotFound } from "./components/Not_found";
 
 function App() {
-  // const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);
 
   return (
-    <>
-      <Router>
-        <Route exact path="/" component={Home} />
-      </Router>
-    </>
+    <div className="App">
+      <Routes>
+        <Route path="/" />
+        <Route path="confessions" element={<Confessions />} />
+        <Route path="misdemeanour" element={<Misdemeanour />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
   );
 }
 
