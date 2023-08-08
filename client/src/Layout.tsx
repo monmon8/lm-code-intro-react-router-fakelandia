@@ -3,9 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Confessions from "./components/ Confessions";
 import Misdemeanour from "./components/Misdemeanour";
-import { NotFound } from "./components/Not_found";
 
-export const Layout = () => {
+import { NotFound } from "./components/Not_Found";
+
+export const Layout: React.FC = () => (
   <>
     <ul>
       <li>
@@ -25,5 +26,5 @@ export const Layout = () => {
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
-  </>;
-};
+  </>
+);
