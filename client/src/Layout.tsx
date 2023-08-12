@@ -1,22 +1,20 @@
-import { Route, Routes } from "react-router-dom";
-
-import { Link } from "react-router-dom";
 import Confessions from "./components/ Confessions";
-import Misdemeanour from "./components/Misdemeanour";
-
+import { Misdemeanour } from "./components/Misdemeanour";
 import { NotFound } from "./components/Not_Found";
+import { NavLink } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 export const Layout: React.FC = () => (
   <>
     <ul>
       <li>
-        <Link to="/">Home</Link>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <Link to="/misdemeanour">Misdemeanour</Link>
+        <NavLink to="/misdemeanour">Misdemeanour</NavLink>
       </li>
       <li>
-        <Link to="confessions">Confessions</Link>
+        <NavLink to="confessions">Confessions</NavLink>
       </li>
     </ul>
     <Routes>
