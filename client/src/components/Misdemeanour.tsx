@@ -1,40 +1,36 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default Misdemeanour;
-interface Misdemeanour {
-  id: number;
-  name: string;
-}
-
 export const Misdemeanour: React.FC = () => {
-  const [misdemeanours, setMisdemeanours] = useState<Array<any>>([
+  const defaultOptions = [
     {
-      citizenId: 8880,
-      misdemeanour: "vegetables",
-      date: "26/02/2023",
+      name: "- Filter -",
+      value: "none",
     },
     {
-      citizenId: 813,
-      misdemeanour: "rudeness",
-      date: "26/02/2023",
+      name: "Mild Public Rudeness",
+      value: "rudeness",
     },
     {
-      citizenId: 5092,
-      misdemeanour: "vegetables",
-      date: "26/02/2023",
+      name: "Speaking in a Lift",
+      value: "lift",
     },
     {
-      citizenId: 6301,
-      misdemeanour: "rudeness",
-      date: "26/02/2023",
+      name: "Not Eating Your Vegetables",
+      value: "vegetables",
     },
     {
-      citizenId: 5986,
-      misdemeanour: "united",
-      date: "26/02/2023",
+      name: "Supporting Manchester United",
+      value: "united",
     },
-  ]);
+  ];
+
+  const [filter, setFilter] = useState<any>(defaultOptions[0].value);
+
+  const [options, setOptions] = useState<any>(defaultOptions);
+
+  const [misdemeanours, setMisdemeanours] = useState<Array<any>>([]);
+
   const getEmoji = (misdemeanour: String) => {
     if (misdemeanour === "united") {
       return "😈";
@@ -51,15 +47,23 @@ export const Misdemeanour: React.FC = () => {
   };
 
   useEffect(() => {
-    getMisdemeanours(20);
+    getMisdemeanours(15);
   }, []);
 
   const getMisdemeanours = async (number: number) => {
     const apiResponse = await axios.get(
       `http://localhost:8080/api/misdemeanours/${number}`
     );
-    // setMisdemeanours(apiResponse.data.misdemeanours);
+    setMisdemeanours(apiResponse.data.misdemeanours);
     console.log(misdemeanours);
+  };
+
+  const filteredMisdemeanours = (filterString: String) => {
+    console.log(filterString);
+    if (filterString === "none") {
+      return misdemeanours;
+    }
+    return misdemeanours.filter((item) => item.misdemeanour === filterString);
   };
 
   const buildRows = () => {
@@ -67,13 +71,14 @@ export const Misdemeanour: React.FC = () => {
     let rows: Array<JSX.Element> = [],
       cols: Array<JSX.Element> = [];
 
-    misdemeanours.forEach((mis, index) => {
+    filteredMisdemeanours(filter).forEach((mis, index) => {
       cols.push(
         <div key={index}>
           <p key={mis.citizenId}>
             {mis.citizenId} - {mis.misdemeanour}
-            {getEmoji(mis.misdemeanour)}- {mis.date}{" "}
+            {getEmoji(mis.misdemeanour)}- {mis.date}
           </p>
+
           <img src="https://picsum.photos/100/50" />
         </div>
       );
@@ -82,9 +87,21 @@ export const Misdemeanour: React.FC = () => {
     return cols;
   };
 
+  const handleChange = (event: any) => {
+    setFilter(event.target.value);
+  };
+
   return (
     <>
       <h1>Misdemeanour!</h1>
+
+      <select onChange={handleChange}>
+        {options.map((item) => (
+          <option key={item.value} value={item.value}>
+            {item.name}
+          </option>
+        ))}
+      </select>
 
       {buildRows()}
     </>
