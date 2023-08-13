@@ -21,7 +21,6 @@ const ConfessionForm: React.FC = () => {
 
   useEffect(() => {
     checkValidity();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subject, reason, details]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,7 +36,7 @@ const ConfessionForm: React.FC = () => {
       onSubmit={handleSubmit}
       className="flex flex-col items-center justify-center"
     >
-      <div>
+      <div className="mb-4">
         <label className="text-center text-2xl">
           <strong>Subject: </strong>
           <input
@@ -56,8 +55,8 @@ const ConfessionForm: React.FC = () => {
           )}
         </label>
       </div>
-      <br />
-      <div>
+
+      <div className="mb-4">
         <label className="text-center text-2xl">
           <strong>Reason for contact: </strong>
           <select
@@ -75,24 +74,31 @@ const ConfessionForm: React.FC = () => {
           </select>
         </label>
       </div>
-      <br />
-      <div className="flex flex-row items-center justify-start">
+
+      <div className="mb-4">
         <label className="text-center text-2xl">
           <strong> Details: </strong>
           <textarea
             name="details"
             value={details}
             onChange={(e) => setDetails(e.target.value)}
-            className="w-96 h-64"
+            className={`w-96 h-48 border-2 ${
+              details.length >= 50 ? "border-green-500" : "border-red-500"
+            } p-2`}
           />
+          {details.length < 50 && (
+            <p className="text-red-500">
+              Details should be at least 50 characters long.
+            </p>
+          )}
         </label>
       </div>
-      <br />
+
       <div>
-        disabled={!isValid}
         <button
+          disabled={!isValid}
           type="submit"
-          className="border-4 font-bold px-2 py-1 text-sm bg-white text-black p-2 rounded border-black hover:bg-blue hover:text-black"
+          className="w-50 h-30 border-3 font-bold px-2 py-1 bg-red-400 text-white p-2 rounded border-red hover:bg-blue hover:text-yellow"
         >
           Confess
         </button>
