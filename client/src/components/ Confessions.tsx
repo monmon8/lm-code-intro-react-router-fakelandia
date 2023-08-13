@@ -1,6 +1,6 @@
 import ConfessionForm from "./confession_form";
 const Confession: React.FC = () => (
-  <div className="flex flex-col min-h-screen bg-yellow-100">
+  <div className="flex flex-col min-h-screen bg-purple-100">
     <p className="text-center text-2xl">
       It is very difficult to catch people committing misdemeanours so we
       apprecaite it when citizens confess to us directly.
