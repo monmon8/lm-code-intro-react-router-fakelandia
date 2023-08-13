@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ".././styles/tailwind.css";
 
 export const Misdemeanour: React.FC = () => {
   const defaultOptions = [
@@ -26,9 +27,7 @@ export const Misdemeanour: React.FC = () => {
   ];
 
   const [filter, setFilter] = useState<any>(defaultOptions[0].value);
-
-  const [options, setOptions] = useState<any>(defaultOptions);
-
+  const [options] = useState<any>(defaultOptions);
   const [misdemeanours, setMisdemeanours] = useState<Array<any>>([]);
 
   const getEmoji = (misdemeanour: String) => {
@@ -55,11 +54,9 @@ export const Misdemeanour: React.FC = () => {
       `http://localhost:8080/api/misdemeanours/${number}`
     );
     setMisdemeanours(apiResponse.data.misdemeanours);
-    console.log(misdemeanours);
   };
 
   const filteredMisdemeanours = (filterString: String) => {
-    console.log(filterString);
     if (filterString === "none") {
       return misdemeanours;
     }
@@ -67,24 +64,31 @@ export const Misdemeanour: React.FC = () => {
   };
 
   const buildRows = () => {
-    // we'll need arrays to store the rows and cols in, and they will be of type JSX.Element
-    let rows: Array<JSX.Element> = [],
-      cols: Array<JSX.Element> = [];
-
-    filteredMisdemeanours(filter).forEach((mis, index) => {
-      cols.push(
-        <div key={index}>
-          <p key={mis.citizenId}>
-            {mis.citizenId} - {mis.misdemeanour}
-            {getEmoji(mis.misdemeanour)}- {mis.date}
-          </p>
-
-          <img src="https://picsum.photos/100/50" />
-        </div>
-      );
-    });
-
-    return cols;
+    return (
+      <div className="flex flex-wrap gap-4">
+        {filteredMisdemeanours(filter).map((mis, index) => (
+          <div
+            key={index}
+            className="p-4 border rounded-lg shadow-md bg-white w-48"
+          >
+            <div className="mb-2">
+              <p className="text-lg font-semibold">
+                {mis.citizenId} - {mis.misdemeanour}{" "}
+                {getEmoji(mis.misdemeanour)}
+              </p>
+              <p className="text-gray-600">{mis.date}</p>
+            </div>
+            <div className="flex items-center justify-center">
+              <img
+                className="w-16 h-16 rounded-full"
+                src="https://picsum.photos/100/50"
+                alt="Misdemeanour"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const handleChange = (event: any) => {
@@ -92,18 +96,16 @@ export const Misdemeanour: React.FC = () => {
   };
 
   return (
-    <>
-      <h1>Misdemeanour!</h1>
-
-      <select onChange={handleChange}>
+    <div className="mx-auto max-w-screen-xl p-6">
+      <h1 className="text-2xl font-semibold mb-4">Misdemeanour!</h1>
+      <select className="border rounded p-2 mb-4" onChange={handleChange}>
         {options.map((item) => (
           <option key={item.value} value={item.value}>
             {item.name}
           </option>
         ))}
       </select>
-
       {buildRows()}
-    </>
+    </div>
   );
 };
